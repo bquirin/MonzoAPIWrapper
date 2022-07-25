@@ -1,0 +1,160 @@
+import requests
+
+# GITHUB READ ME PREREQUISITES: MONZO ACCOUNT, PYTHON, TOKEN
+# validation of access token (make sure its a string, test the length of the access_token)
+# Use types for python added typing 
+# def __init__(self, access_token: str) -> None:
+# status checks on requests
+
+# if res.status_code == 200:
+#     return res.json()
+# else:
+#     return {"error_message": res.json()}
+# try catch if not connected to the internet > get exception
+# read up on request library/youtube video
+# use get_accounts in get_account_ids
+# check for reusable code
+# get rid of monzo endpoint
+# requests.get(f"{self.monzo_base_url}/balance", headers=self.headers, params=params)
+# Next step: Unit testing (mock requests)
+# Web Client: Flask print info out
+
+#if not access_token:
+ #   print('no access token given')
+# check if access_token is "full" (not empty)
+# put regex to check access_token 
+# add doctrings to functions """"document each function """"
+# make the entry from time in transactions a bit more user friendly
+# def get_transatctions(month)
+# add in function for version, repr, look at splunk one 
+
+
+# virtual environment
+# git connect with github 
+# add python .gitigore file
+
+class MonzoClient:
+    
+    
+    def __init__(self, access_token: str) -> None:
+        """
+        Initialises the Monzo client object with the required attributes. 
+        """
+        self.access_token = access_token
+        self.monzo_base_url = "https://api.monzo.com"
+        self.headers = {"Authorization" : f'Bearer {self.access_token}'}
+        self.validate_access_token()
+        
+    
+    def validate_access_token(self) -> None: 
+        """
+        Verifies if the the Monzo access token is valid
+        """
+        if not isinstance(self.access_token, str):
+            raise TypeError('Error: Access token should be a string')
+        elif len(self.access_token) != 239:
+            raise ValueError("Error: Length of access token is wrong. Please check that your access token is valid")
+
+    
+    def make_request(self, monzo_endpoint, params=None):
+        """
+        Makes a GET request to a monzo endpoint and returns a response object
+        """
+        if params:
+            res = requests.get(self.monzo_base_url + monzo_endpoint, headers=self.headers, params=params)
+        else:
+            res = requests.get(self.monzo_base_url + monzo_endpoint, headers=self.headers) 
+
+        if res.status_code != 200:
+            return (f"Error talking to Monzo API. Status code: {res.status_code}")
+        return res
+    
+    
+    def whoami(self): 
+        """
+        Returns the response for the /ping/whoami API endpoint
+        More details here: https://docs.monzo.com/#acquire-an-access-token
+        """
+        res = self.make_request("/ping/whoami")
+        return res.json()
+    
+    
+    def get_accounts(self):
+        """
+        Returns the response for the "/accounts API endpoint
+        More details here: https://docs.monzo.com/#accounts
+        """
+        res = self.make_request("/accounts")
+        return res.json()
+
+    
+    def get_account_ids(self):
+        """
+        Returns a list of account Id's from the response of the /accounts API endpoint
+        More details here: https://docs.monzo.com/#accounts
+        """
+        json_res = self.get_accounts()
+
+        return [item['id'] for item in json_res['accounts']]
+    
+    
+    def get_balance(self, account_id):
+        """
+        Returns the response for the "/balance API endpoint
+        More details here: https://docs.monzo.com/#balance
+        """
+        
+        params= {
+            "account_id" : account_id
+            }
+        
+        res = self.make_request("/balance", params=params)
+        return res.json()
+   
+    
+    def get_transactions(self, account_id, since=None, before=None,  limit=None):
+        """
+        Returns the response for the "/transactions API endpoint
+        More details here: https://docs.monzo.com/#transactions
+        """
+        
+        params = {
+            "expand[]": "merchant",
+            "account_id": account_id,
+            "before": before,
+            "since": since,
+            "limit": limit,
+        }
+        
+        res = self.make_request("/transactions", params=params)
+        return res.json()
+    
+    
+    def get_transaction(self, transaction_id):
+        """
+        Returns the response for the /transactions/{transaction_id} API endpoint
+        More details here: https://docs.monzo.com/#transactions
+        """
+
+        params = {
+            "expand[]": "merchant",
+        }
+        path = f"/transactions/{transaction_id}"
+        
+        res = self.make_request(path, params=params)
+        return res.json()
+        
+
+    def get_pots(self, account_id):
+        """
+        Returns the response for the /pots API endpoint
+        More details here: https://docs.monzo.com/#pots
+        """
+        
+        params = {
+            "current_account_id": account_id
+        }
+        
+        res = self.make_request("/pots", params=params)
+        return res.json()
+   
