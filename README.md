@@ -3,7 +3,7 @@
 - Monzo account
 - Access Token
 
-# Requirements
+# Requirements/ Todo
 
 - Unit testS (mock requests)
 - Web Client: Visualise data (use Flask)
@@ -14,6 +14,7 @@
 - Review Splunk API
 - Add .gitignore
 - Add python setuptool, venv, make, __init__ etc
+- Look into OAuth
 
 # Getting started
 
