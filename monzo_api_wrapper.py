@@ -1,38 +1,5 @@
 import requests
 
-# GITHUB READ ME PREREQUISITES: MONZO ACCOUNT, PYTHON, TOKEN
-# validation of access token (make sure its a string, test the length of the access_token)
-# Use types for python added typing 
-# def __init__(self, access_token: str) -> None:
-# status checks on requests
-
-# if res.status_code == 200:
-#     return res.json()
-# else:
-#     return {"error_message": res.json()}
-# try catch if not connected to the internet > get exception
-# read up on request library/youtube video
-# use get_accounts in get_account_ids
-# check for reusable code
-# get rid of monzo endpoint
-# requests.get(f"{self.monzo_base_url}/balance", headers=self.headers, params=params)
-# Next step: Unit testing (mock requests)
-# Web Client: Flask print info out
-
-#if not access_token:
- #   print('no access token given')
-# check if access_token is "full" (not empty)
-# put regex to check access_token 
-# add doctrings to functions """"document each function """"
-# make the entry from time in transactions a bit more user friendly
-# def get_transatctions(month)
-# add in function for version, repr, look at splunk one 
-
-
-# virtual environment
-# git connect with github 
-# add python .gitigore file
-
 class MonzoClient:
     
     
