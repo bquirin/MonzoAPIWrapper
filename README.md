@@ -1,3 +1,6 @@
+# Overview
+The code provides a Pythonic interface to the Monzo REST API: https://docs.monzo.com/#introduction. Allowing you programmatically interact with your Monzo account.
+
 # Prerequisites
 
 - Monzo account
