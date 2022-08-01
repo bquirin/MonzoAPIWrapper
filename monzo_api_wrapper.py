@@ -8,6 +8,7 @@ class MonzoClient:
     def __init__(self, access_token: str) -> None:
         """
         Initialises the Monzo client object with the required attributes. 
+        e.g. monzo = MonzoClient(access_token)
         """
         self.access_token = access_token
         self.monzo_base_url = "https://api.monzo.com"
@@ -18,6 +19,7 @@ class MonzoClient:
     def validate_access_token(self) -> None: 
         """
         Verifies if the the Monzo access token is valid
+        e.g. 
         """
         if not isinstance(self.access_token, str):
             raise TypeError('Error: Access token should be a string')
@@ -28,12 +30,12 @@ class MonzoClient:
     def make_request(self, monzo_endpoint: str, params=None) -> requests: 
         """
         Makes a GET request to a monzo endpoint and returns a response object
+        e.g. res = self.make_request("/ping/whoami")
         """
         if params:
             res = requests.get(self.monzo_base_url + monzo_endpoint, headers=self.headers, params=params)
         else:
             res = requests.get(self.monzo_base_url + monzo_endpoint, headers=self.headers) 
-
         try:
             res.raise_for_status()
         except requests.exceptions.HTTPError as err:
@@ -45,6 +47,7 @@ class MonzoClient:
         """
         Returns the response for the /ping/whoami API endpoint
         More details here: https://docs.monzo.com/#acquire-an-access-token
+        e.g. monzo.whoami()
         """
         res = self.make_request("/ping/whoami")
         return res.json()
@@ -54,6 +57,7 @@ class MonzoClient:
         """
         Returns the response for the "/accounts API endpoint
         More details here: https://docs.monzo.com/#accounts
+        e.g. monzo.get_accounts()
         """
         res = self.make_request("/accounts")
         return res.json()
@@ -63,16 +67,18 @@ class MonzoClient:
         """
         Returns a list of account Id's from the response of the /accounts API endpoint
         More details here: https://docs.monzo.com/#accounts
+        e.g. monzo.get_account_ids()
         """
         json_res = self.get_accounts()
 
         return [item['id'] for item in json_res['accounts']]
     
     
-    def get_balance(self, account_id: Dict[str, str]) -> json:
+    def get_balance(self, account_id: str) -> json:
         """
         Returns the response for the "/balance API endpoint
         More details here: https://docs.monzo.com/#balance
+        e.g. monzo.get balance("acc_00009237aqC8c5umZmrRdh")
         """
         
         params= {
@@ -87,6 +93,8 @@ class MonzoClient:
         """
         Returns the response for the "/transactions API endpoint
         More details here: https://docs.monzo.com/#transactions
+
+        e.g. monzo.get_transactions("acc_00009237aqC8c5umZmrRdh", 2009-11-10T23:00:00Z, 2009-11-10T23:00:00Z)
         """
         
         params = {
@@ -105,6 +113,8 @@ class MonzoClient:
         """
         Returns the response for the /transactions/{transaction_id} API endpoint
         More details here: https://docs.monzo.com/#transactions
+
+        e.g monzo.get_transaction("tx_00008zL2INM3xZ41THuRF3" )
         """
 
         params = {
@@ -120,6 +130,8 @@ class MonzoClient:
         """
         Returns the response for the /pots API endpoint
         More details here: https://docs.monzo.com/#pots
+
+        e.g. monzo.get_pots("acc_00009237aqC8c5umZmrRdh")
         """
         
         params = {
