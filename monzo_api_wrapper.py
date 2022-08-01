@@ -30,6 +30,7 @@ class MonzoClient:
     def make_request(self, monzo_endpoint: str, params=None) -> requests: 
         """
         Makes a GET request to a monzo endpoint and returns a response object
+
         e.g. res = self.make_request("/ping/whoami")
         """
         if params:
@@ -47,6 +48,7 @@ class MonzoClient:
         """
         Returns the response for the /ping/whoami API endpoint
         More details here: https://docs.monzo.com/#acquire-an-access-token
+
         e.g. monzo.whoami()
         """
         res = self.make_request("/ping/whoami")
@@ -57,6 +59,7 @@ class MonzoClient:
         """
         Returns the response for the "/accounts API endpoint
         More details here: https://docs.monzo.com/#accounts
+
         e.g. monzo.get_accounts()
         """
         res = self.make_request("/accounts")
@@ -67,6 +70,7 @@ class MonzoClient:
         """
         Returns a list of account Id's from the response of the /accounts API endpoint
         More details here: https://docs.monzo.com/#accounts
+
         e.g. monzo.get_account_ids()
         """
         json_res = self.get_accounts()
@@ -78,6 +82,7 @@ class MonzoClient:
         """
         Returns the response for the "/balance API endpoint
         More details here: https://docs.monzo.com/#balance
+        
         e.g. monzo.get balance("acc_00009237aqC8c5umZmrRdh")
         """
         
