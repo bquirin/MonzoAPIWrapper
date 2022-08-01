@@ -1,3 +1,5 @@
+import json
+from typing import Dict
 import requests
 
 class MonzoClient:
@@ -23,7 +25,7 @@ class MonzoClient:
             raise ValueError("Error: Length of access token is wrong. Please check that your access token is valid")
 
     
-    def make_request(self, monzo_endpoint, params=None):
+    def make_request(self, monzo_endpoint: str, params=None) -> requests: 
         """
         Makes a GET request to a monzo endpoint and returns a response object
         """
@@ -37,7 +39,7 @@ class MonzoClient:
         return res
     
     
-    def whoami(self): 
+    def whoami(self) -> json: 
         """
         Returns the response for the /ping/whoami API endpoint
         More details here: https://docs.monzo.com/#acquire-an-access-token
@@ -46,7 +48,7 @@ class MonzoClient:
         return res.json()
     
     
-    def get_accounts(self):
+    def get_accounts(self) -> json:
         """
         Returns the response for the "/accounts API endpoint
         More details here: https://docs.monzo.com/#accounts
@@ -65,7 +67,7 @@ class MonzoClient:
         return [item['id'] for item in json_res['accounts']]
     
     
-    def get_balance(self, account_id):
+    def get_balance(self, account_id: Dict[str, str]) -> json:
         """
         Returns the response for the "/balance API endpoint
         More details here: https://docs.monzo.com/#balance
@@ -79,7 +81,7 @@ class MonzoClient:
         return res.json()
    
     
-    def get_transactions(self, account_id, since=None, before=None,  limit=None):
+    def get_transactions(self, account_id: str, since=None, before=None,  limit=None) -> json:
         """
         Returns the response for the "/transactions API endpoint
         More details here: https://docs.monzo.com/#transactions
@@ -97,7 +99,7 @@ class MonzoClient:
         return res.json()
     
     
-    def get_transaction(self, transaction_id):
+    def get_transaction(self, transaction_id: str) -> json:
         """
         Returns the response for the /transactions/{transaction_id} API endpoint
         More details here: https://docs.monzo.com/#transactions
@@ -112,7 +114,7 @@ class MonzoClient:
         return res.json()
         
 
-    def get_pots(self, account_id):
+    def get_pots(self, account_id: str) -> json:
         """
         Returns the response for the /pots API endpoint
         More details here: https://docs.monzo.com/#pots
