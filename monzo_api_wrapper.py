@@ -34,8 +34,10 @@ class MonzoClient:
         else:
             res = requests.get(self.monzo_base_url + monzo_endpoint, headers=self.headers) 
 
-        if res.status_code != 200:
-            return (f"Error talking to Monzo API. Status code: {res.status_code}")
+        try:
+            res.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise SystemExit(err)
         return res
     
     
